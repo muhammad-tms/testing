@@ -35,7 +35,7 @@ body {
   
   input[type="url"],
   input[type="text"] {
-    width: calc(100% - 20px);
+    width: calc(100% - 60px);
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
@@ -60,8 +60,28 @@ body {
     flex-direction: column;
   }
   
-  .name-input {
+  .name-item {
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
+  }
+  
+  .name-input {
+    flex: 1;
+  }
+  
+  .delete-name {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .delete-name:hover {
+    background: #c82333;
   }
   
   button#add-name {

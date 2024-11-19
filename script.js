@@ -3,13 +3,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const nameList = document.getElementById("name-list");
     const generateCertificatesButton = document.getElementById("generate-certificates");
   
-    // Add a new name input field
+    // Add a new name input field with delete button
     addNameButton.addEventListener("click", () => {
+      const nameItem = document.createElement("div");
+      nameItem.classList.add("name-item");
+  
       const nameInput = document.createElement("input");
       nameInput.type = "text";
       nameInput.classList.add("name-input");
       nameInput.placeholder = "Enter a name";
-      nameList.appendChild(nameInput);
+  
+      const deleteButton = document.createElement("button");
+      deleteButton.classList.add("delete-name");
+      deleteButton.textContent = "Delete";
+  
+      // Add delete functionality
+      deleteButton.addEventListener("click", () => {
+        nameList.removeChild(nameItem);
+      });
+  
+      nameItem.appendChild(nameInput);
+      nameItem.appendChild(deleteButton);
+      nameList.appendChild(nameItem);
     });
   
     // Generate certificates
