@@ -1,63 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
     const addNameButton = document.getElementById("add-name");
-    const nameInput = document.getElementById("name-input");
-    const namesList = document.getElementById("names-list");
+    const nameList = document.getElementById("name-list");
     const generateCertificatesButton = document.getElementById("generate-certificates");
-    const templateLinkInput = document.getElementById("template-link");
-
-    // Add name to the list
+  
+    // Add a new name input field
     addNameButton.addEventListener("click", () => {
-        const name = nameInput.value.trim();
-        if (name) {
-            const listItem = document.createElement("li");
-            listItem.classList.add("name-item");
-
-            const nameSpan = document.createElement("span");
-            nameSpan.textContent = name;
-            listItem.appendChild(nameSpan);
-
-            const removeButton = document.createElement("button");
-            removeButton.textContent = "Remove";
-            removeButton.classList.add("remove-name");
-            removeButton.addEventListener("click", () => {
-                namesList.removeChild(listItem);
-            });
-
-            listItem.appendChild(removeButton);
-            namesList.appendChild(listItem);
-            nameInput.value = "";
-            nameInput.focus();
-        }
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      nameInput.classList.add("name-input");
+      nameInput.placeholder = "Enter a name";
+      nameList.appendChild(nameInput);
     });
-
-    // Add name when pressing Enter
-    nameInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            addNameButton.click();
-        }
-    });
-
+  
     // Generate certificates
-    generateCertificatesButton.addEventListener("click", () => {
-        const templateLink = templateLinkInput.value.trim();
-        if (!templateLink) {
-            alert("Please provide a Google Slide template link.");
-            return;
-        }
-
-        const names = Array.from(namesList.children).map(item => item.querySelector("span").textContent);
-        if (names.length === 0) {
-            alert("Please add at least one name.");
-            return;
-        }
-
-        names.forEach(name => {
-            // Assuming you have a mechanism to generate certificates using the template
-            // Here you can call a backend API or use Google Slides API to generate certificates
-            console.log(`Generating certificate for ${name} using template: ${templateLink}`);
-            // For simplicity, we just log it to console here
+    generateCertificatesButton.addEventListener("click", async () => {
+      const templateLink = document.getElementById("template-link").value;
+      const nameInputs = document.querySelectorAll(".name-input");
+      const names = Array.from(nameInputs).map(input => input.value).filter(name => name.trim() !== "");
+  
+      if (!templateLink || names.length === 0) {
+        alert("Please provide a template link and at least one name.");
+        return;
+      }
+  
+      try {
+        // Simulate certificate generation
+        const certificates = names.map(name => {
+          return {
+            name,
+            link: `${templateLink}&name=${encodeURIComponent(name)}`
+          };
         });
-
-        alert("Certificates have been generated.");
+  
+        // Automatically download certificates
+        certificates.forEach(cert => {
+          const link = document.createElement("a");
+          link.href = cert.link;
+          link.download = `${cert.name}-certificate.pdf`;
+          link.click();
+        });
+  
+        alert("Certificates generated successfully!");
+      } catch (error) {
+        console.error("Error generating certificates:", error);
+        alert("An error occurred while generating certificates.");
+      }
     });
-});
+  });
+  
